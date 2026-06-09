@@ -1,0 +1,87 @@
+/* ==========================================================================
+   tokens.css — SINGLE SOURCE OF TRUTH for the zine visual layer.
+   Palette, type scale, spacing, and "imperfection" vars (rotation/offset).
+   zine.css and all components consume these. Import this first.
+   ========================================================================== */
+
+:root {
+  /* --- INK & PAPER -------------------------------------------------------- */
+  --ink: #14110f;            /* primary ink — near-black, slightly warm (toner) */
+  --ink-soft: #2b2723;       /* secondary ink for less-critical strokes */
+  --paper: #f4efe3;          /* off-white newsprint base */
+  --paper-bright: #fbf8ef;   /* lighter sheet (cards / cut-outs) */
+  --paper-dim: #e7e0cf;      /* shadowed / aged paper */
+
+  /* --- SPOT COLOR: highlighter yellow ------------------------------------ */
+  /* CONTRAST RULE: NEVER yellow text on white. Yellow = (a) marker fill BEHIND
+     black text, (b) sticker/tape/stamp accent, (c) accent on BLACK bg. */
+  --highlighter: #ffe800;        /* the spot color */
+  --highlighter-deep: #f2cf00;   /* edge/shadow of the marker swipe */
+
+  /* --- RARE ACCENTS (use sparingly; never as equal stripes / flag) -------- */
+  --accent-red: #e0301e;
+  --accent-green: #1f8a3b;
+
+  /* --- SEMANTIC ----------------------------------------------------------- */
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --bg-invert: var(--ink);   /* black panels — yellow-on-black lives here */
+  --fg-invert: var(--paper-bright);
+  --link: var(--ink);
+  --hairline: var(--ink);
+
+  /* --- TYPE (families come from src/app/(frontend)/fonts.ts) -------------- */
+  --font-display: 'Anton', 'Arial Narrow', system-ui, sans-serif;
+  --font-ransom: 'Archivo Black', system-ui, sans-serif;
+  --font-stamp: 'Special Elite', 'Courier New', monospace;
+  --font-body: 'Spline Sans Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* fluid type scale (mobile-first; clamps grow with viewport) */
+  --fs-display: clamp(2.5rem, 11vw, 6rem);
+  --fs-h1: clamp(2rem, 8vw, 4rem);
+  --fs-h2: clamp(1.5rem, 5vw, 2.5rem);
+  --fs-h3: clamp(1.25rem, 3.5vw, 1.75rem);
+  --fs-body: clamp(1rem, 0.95rem + 0.3vw, 1.0625rem);
+  --fs-small: 0.8125rem;
+
+  --lh-tight: 0.95;
+  --lh-body: 1.6;   /* generous for mono readability / WCAG */
+  --measure: 68ch;  /* max line length for body copy */
+
+  /* --- SPACING (8pt-ish, slightly off for zine looseness) ----------------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-8: 3rem;
+  --space-12: 5rem;
+
+  /* --- IMPERFECTION: rotation / offset jitter ----------------------------- */
+  /* Components read these so the whole site shares one "wobble" budget. */
+  --tilt-xs: 0.6deg;
+  --tilt-sm: 1.5deg;
+  --tilt-md: 3deg;
+  --tilt-lg: 5deg;
+  --jitter: 2px;            /* small positional nudge */
+
+  /* --- BORDERS / EDGES ---------------------------------------------------- */
+  --stroke: 2px;           /* default hand-inked stroke weight */
+  --stroke-bold: 4px;
+  --radius: 2px;           /* photocopies are square; keep it tight */
+
+  /* --- TEXTURE INTENSITY (consumed by zine.css; tune globally here) ------- */
+  --grain-opacity: 0.10;
+  --halftone-opacity: 0.14;
+  --paper-tex-opacity: 0.7;
+
+  /* --- ELEVATION (hard xerox drop, no blur) ------------------------------- */
+  --shadow-hard: 4px 4px 0 var(--ink);
+  --shadow-hard-sm: 2px 2px 0 var(--ink);
+
+  /* --- Z-LAYERS ----------------------------------------------------------- */
+  --z-grain: 9999;   /* site-wide grain overlay sits on top, pointer-events:none */
+  --z-tape: 50;
+  --z-sticker: 40;
+}

@@ -1,0 +1,205 @@
+/* ==========================================================================
+   zine.css — texture, grain, halftone, tape & paper utilities.
+   Consumes the custom properties in tokens.css (import tokens.css FIRST).
+   Pure presentational classes; safe to apply anywhere.
+   ========================================================================== */
+
+/* --- PAPER SURFACE -------------------------------------------------------- */
+/* The base newsprint sheet. Use on a wrapper that fills the viewport. */
+.zine-paper {
+  background-color: var(--paper);
+  color: var(--ink);
+  position: relative;
+}
+/* Fiber/blotch layer painted as a pseudo-element so content stays selectable. */
+.zine-paper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url('/textures/paper.svg');
+  background-size: 300px 300px;
+  opacity: var(--paper-tex-opacity);
+  mix-blend-mode: multiply;
+  z-index: 0;
+}
+/* keep real content above the texture */
+.zine-paper > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Inverted black panel — the home of yellow-on-black accents. */
+.zine-ink-panel {
+  background-color: var(--bg-invert);
+  color: var(--fg-invert);
+}
+
+/* --- SITE-WIDE GRAIN OVERLAY --------------------------------------------- */
+/* Fixed, non-interactive toner-speckle layer. Render ONCE near root. */
+.zine-grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: var(--z-grain);
+  background-image: url('/textures/grain.svg');
+  background-size: 220px 220px;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: multiply;
+}
+
+/* --- HALFTONE ------------------------------------------------------------- */
+/* Dot-screen wash you can lay over any box (used by <Halftone/>). */
+.zine-halftone-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url('/textures/halftone.svg');
+  background-size: 6px 6px;
+  opacity: var(--halftone-opacity);
+  mix-blend-mode: multiply;
+}
+/* Treat an image as a 1-bit-ish xerox: high contrast + grayscale. */
+.zine-halftone-img {
+  filter: grayscale(1) contrast(1.35) brightness(1.05);
+}
+
+/* --- HAND-INKED EDGES ----------------------------------------------------- */
+.zine-border {
+  border: var(--stroke) solid var(--ink);
+}
+.zine-border-bold {
+  border: var(--stroke-bold) solid var(--ink);
+}
+/* hard photocopy drop shadow, no blur */
+.zine-shadow {
+  box-shadow: var(--shadow-hard);
+}
+.zine-shadow-sm {
+  box-shadow: var(--shadow-hard-sm);
+}
+
+/* --- HIGHLIGHTER MARKER --------------------------------------------------- */
+/* Apply to a span wrapping BLACK text — yellow swipe sits behind the glyphs.
+   Never produces yellow text; the text color is forced to ink. */
+.zine-marker {
+  color: var(--ink);
+  background-image: linear-gradient(
+    100deg,
+    transparent 0.2em,
+    var(--highlighter) 0.2em,
+    var(--highlighter) calc(100% - 0.15em),
+    transparent calc(100% - 0.15em)
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 0.72em;
+  background-position: 0 0.72em;
+  padding: 0 0.12em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* --- TILT / WOBBLE HELPERS ------------------------------------------------ */
+.zine-tilt-l { transform: rotate(calc(-1 * var(--tilt-sm))); }
+.zine-tilt-r { transform: rotate(var(--tilt-sm)); }
+.zine-tilt-lg-l { transform: rotate(calc(-1 * var(--tilt-md))); }
+.zine-tilt-lg-r { transform: rotate(var(--tilt-md)); }
+
+/* --- TAPE -----------------------------------------------------------------*/
+/* A strip of translucent "tape". Rotation/position set inline by the
+   component via the --tape-rot custom prop. */
+.zine-tape {
+  --tape-rot: -4deg;
+  display: inline-block;
+  padding: var(--space-1) var(--space-4);
+  background: rgba(255, 232, 0, 0.55); /* highlighter, translucent like real tape */
+  border-left: 1px dashed rgba(20, 17, 15, 0.25);
+  border-right: 1px dashed rgba(20, 17, 15, 0.25);
+  box-shadow: 0 1px 2px rgba(20, 17, 15, 0.25);
+  transform: rotate(var(--tape-rot));
+  font-family: var(--font-stamp);
+  font-size: var(--fs-small);
+  color: var(--ink);
+  letter-spacing: 0.04em;
+  /* torn-edge feel via clip */
+  clip-path: polygon(0 8%, 100% 0, 98% 92%, 2% 100%);
+}
+.zine-tape--paper { background: rgba(244, 239, 227, 0.85); }
+.zine-tape--black { background: rgba(20, 17, 15, 0.85); color: var(--highlighter); }
+
+/* --- STICKER --------------------------------------------------------------*/
+/* Rotated bordered label / stamp. Rotation set inline via --sticker-rot. */
+.zine-sticker {
+  --sticker-rot: -3deg;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2) var(--space-4);
+  border: var(--stroke-bold) solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--paper-bright);
+  color: var(--ink);
+  font-family: var(--font-stamp);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+  transform: rotate(var(--sticker-rot));
+  box-shadow: var(--shadow-hard-sm);
+}
+.zine-sticker--yellow { background: var(--highlighter); color: var(--ink); }
+.zine-sticker--black { background: var(--ink); color: var(--highlighter); border-color: var(--ink); }
+.zine-sticker--circle { border-radius: 50%; aspect-ratio: 1; padding: var(--space-4); }
+
+/* --- RANSOM HEADING -------------------------------------------------------*/
+.zine-ransom {
+  font-family: var(--font-ransom);
+  text-transform: uppercase;
+  line-height: 1.05;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.05em 0.12em;
+  align-items: baseline;
+}
+.zine-ransom__bit {
+  display: inline-block;
+  padding: 0 0.08em;
+}
+/* alternating ransom-note treatments — the component cycles these classes */
+.zine-ransom__bit--a { transform: rotate(calc(-1 * var(--tilt-sm))); }
+.zine-ransom__bit--b { transform: rotate(var(--tilt-md)); background: var(--ink); color: var(--paper-bright); }
+.zine-ransom__bit--c { transform: rotate(calc(-1 * var(--tilt-xs))); font-family: var(--font-display); }
+.zine-ransom__bit--d {
+  transform: rotate(var(--tilt-xs));
+  background: var(--highlighter);
+  color: var(--ink);
+  box-shadow: var(--shadow-hard-sm);
+}
+
+/* --- TYPE PRESETS --------------------------------------------------------- */
+.zine-display {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  line-height: var(--lh-tight);
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+.zine-body {
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  max-width: var(--measure);
+}
+.zine-stamp {
+  font-family: var(--font-stamp);
+  letter-spacing: 0.02em;
+}
+
+/* --- REDUCED MOTION ------------------------------------------------------- */
+/* The grain layer is static by default, but if any consumer animates it
+   (e.g. a flickering toner effect), kill it for reduced-motion users. */
+@media (prefers-reduced-motion: reduce) {
+  .zine-grain,
+  .zine-grain * {
+    animation: none !important;
+  }
+}
