@@ -1,0 +1,43 @@
+{
+  "Nav": {
+    "home": "Strona główna",
+    "about": "O nas",
+    "siteTitle": "Under Big Black Sun"
+  },
+  "Home": {
+    "latestPosts": "Najnowsze wpisy",
+    "loadMore": "Załaduj więcej",
+    "noPosts": "Brak wpisów."
+  },
+  "Post": {
+    "publishedOn": "Opublikowano {date}",
+    "comments": "Komentarze",
+    "leaveComment": "Dodaj komentarz",
+    "nickname": "Pseudonim",
+    "commentBody": "Twój komentarz",
+    "submit": "Opublikuj komentarz",
+    "awaitingModeration": "Twój komentarz został wysłany i czeka na moderację.",
+    "like": "Polub",
+    "likes": "{count, plural, =0 {Brak polubień} one {# polubienie} few {# polubienia} many {# polubień} other {# polubień}}"
+  },
+  "Comments": {
+    "empty": "Brak komentarzy. Napisz coś jako pierwszy.",
+    "errorGeneric": "Coś poszło nie tak. Spróbuj ponownie.",
+    "rateLimited": "Za szybko. Poczekaj chwilę i spróbuj ponownie.",
+    "tooLong": "Twój komentarz jest za długi (maksymalnie 2000 znaków).",
+    "emptyField": "Wypełnij to pole."
+  },
+  "About": {
+    "title": "O nas",
+    "bioPlaceholder": "Blog z warszawskiej sceny undergroundowej.",
+    "linksTitle": "Linki",
+    "instagram": "Instagram",
+    "bandcamp": "Bandcamp",
+    "label": "Wytwórnia"
+  },
+  "NotFound": {
+    "title": "Nie znaleziono strony",
+    "message": "Strona, której szukasz, nie istnieje lub została przeniesiona.",
+    "backHome": "Wróć na stronę główną"
+  }
+}
