@@ -1,2 +1,27 @@
-/* Stylesheet hook for the Payload admin UI. Left empty intentionally;
-   custom admin styling can be added here later without touching layout.tsx. */
+/* Stylesheet hook for the Payload admin UI.
+ *
+ * WHY THIS IMPORT EXISTS
+ * ----------------------
+ * Payload's admin theme custom properties live in
+ * `@payloadcms/ui/scss/app.scss` (the base `:root { --base-px; --gutter-h;
+ * --nav-width; --theme-bg; ... }` block) and in its `@import './colors.scss'`
+ * (the `:root { --color-base-*; --theme-elevation-*; --theme-*; }`
+ * declarations). Those `:root` blocks are normally pulled in transitively
+ * because every admin component does `import '@payloadcms/ui/scss/app.scss'`.
+ *
+ * In this app (Next 15 + sass + multiple root layouts via route groups) the
+ * SCSS->CSS pipeline DROPPED those `:root` declaration blocks from the built
+ * admin bundle: the component rules that CONSUME the variables survived, but
+ * the declarations themselves did not (verified: zero `--theme-elevation-0:` /
+ * `--color-base-0:` in any compiled .next CSS file). Every `var(--theme-*)`
+ * then resolved to empty, so the admin rendered completely unstyled.
+ *
+ * Importing `app.scss` once from this single, separately-compiled SCSS module
+ * (which `layout.tsx` already loads) re-emits both `:root` blocks into the
+ * admin bundle. `@use` (not `@import`, and NOT the deprecated `~` prefix) is
+ * required: the `~`/bare-`@import` forms resolved the package to its compiled
+ * CSS and failed sass parsing ("Expected digit"); `@use` with the package's
+ * exported `./scss/app.scss` path resolves the SCSS source correctly.
+ *
+ * Custom admin styling can still be added below without touching layout.tsx. */
+@use '@payloadcms/ui/scss/app.scss';
