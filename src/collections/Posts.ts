@@ -1,9 +1,10 @@
 import type { CollectionConfig } from 'payload'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { lexicalEditor, BlocksFeature } from '@payloadcms/richtext-lexical'
 import { isAdmin, publishedOrAdmin } from '../access'
 import { slugField } from '../fields/slug'
 import { revalidatePost, revalidatePostDelete } from '../hooks/revalidate'
 import { cascadeDeletePostComments } from '../hooks/cascadeDelete'
+import { EmbedBlock } from '../blocks/embed/EmbedBlock'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -31,8 +32,20 @@ export const Posts: CollectionConfig = {
     { name: 'publishedDate', type: 'date', admin: { position: 'sidebar' } },
     { name: 'coverImage', type: 'upload', relationTo: 'media' },
     { name: 'excerpt', type: 'textarea', localized: true },
-    // backend subagent later replaces this editor with the embed-block-enabled one
-    { name: 'content', type: 'richText', localized: true, editor: lexicalEditor({}) },
+    // Notion-like editor: keep all default features (paragraphs, headings, lists, quotes, links,
+    // inline upload images via UploadFeature, code blocks, dividers) and add the custom `embed`
+    // block (YouTube / Bandcamp / SoundCloud) via BlocksFeature.
+    {
+      name: 'content',
+      type: 'richText',
+      localized: true,
+      editor: lexicalEditor({
+        features: ({ defaultFeatures }) => [
+          ...defaultFeatures,
+          BlocksFeature({ blocks: [EmbedBlock] }),
+        ],
+      }),
+    },
     { name: 'tags', type: 'text', hasMany: true },
   ],
 }

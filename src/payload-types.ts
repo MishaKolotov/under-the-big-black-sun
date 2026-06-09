@@ -495,6 +495,20 @@ export interface CollectionsWidget {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EmbedBlock".
+ */
+export interface EmbedBlock {
+  /**
+   * Paste a YouTube, Bandcamp, or SoundCloud URL.
+   */
+  url: string;
+  provider: 'youtube' | 'bandcamp' | 'soundcloud';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'embed';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "auth".
  */
 export interface Auth {
