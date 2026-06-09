@@ -17,7 +17,7 @@
     "migrate": "payload migrate",
     "migrate:create": "payload migrate:create",
     "payload": "payload",
-    "seed": "tsx src/seed/index.ts"
+    "seed": "tsx --env-file=.env src/seed/index.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.85.0",
