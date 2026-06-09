@@ -86,10 +86,11 @@ export async function getPostBySlug(locale: Locale, slug: string): Promise<Post 
 /** Published slugs (slug is non-localized, so one query suffices). */
 export async function getPublishedSlugs(): Promise<string[]> {
   const payload = await getPayloadClient()
+  // pagination: false (no limit) intentionally fetches ALL published slugs
+  // for generateStaticParams + sitemap — must not truncate.
   const result = await payload.find({
     collection: 'posts',
     depth: 0,
-    limit: 1000,
     pagination: false,
     overrideAccess: false,
     where: { status: { equals: 'published' } },

@@ -28,7 +28,9 @@ export default function Comments({ postId }: CommentsProps) {
 
   const [comments, setComments] = useState<CommentDTO[]>([])
   const [loaded, setLoaded] = useState(false)
+  const [loadError, setLoadError] = useState(false)
   const [liked, setLiked] = useState<Record<string, boolean>>({})
+  const [pendingLikes, setPendingLikes] = useState<Set<string>>(new Set())
 
   const [nickname, setNickname] = useState('')
   const [body, setBody] = useState('')
@@ -42,9 +44,14 @@ export default function Comments({ postId }: CommentsProps) {
     void (async () => {
       try {
         const res = await fetch(`/api/comments?post=${encodeURIComponent(postId)}`)
-        if (!res.ok) return
+        if (!res.ok) {
+          if (active) setLoadError(true)
+          return
+        }
         const data: { comments: CommentDTO[] } = await res.json()
         if (active) setComments(data.comments)
+      } catch {
+        if (active) setLoadError(true)
       } finally {
         if (active) setLoaded(true)
       }
@@ -55,6 +62,14 @@ export default function Comments({ postId }: CommentsProps) {
   }, [postId])
 
   const toggleLike = async (commentId: string) => {
+    // Per-comment in-flight guard — ignore rapid double-clicks on the same comment.
+    if (pendingLikes.has(commentId)) return
+    setPendingLikes((s) => {
+      const next = new Set(s)
+      next.add(commentId)
+      return next
+    })
+
     const wasLiked = liked[commentId] ?? false
     // Optimistic update.
     setLiked((m) => ({ ...m, [commentId]: !wasLiked }))
@@ -85,6 +100,12 @@ export default function Comments({ postId }: CommentsProps) {
           c.id === commentId ? { ...c, likeCount: c.likeCount + (wasLiked ? 1 : -1) } : c,
         ),
       )
+    } finally {
+      setPendingLikes((s) => {
+        const next = new Set(s)
+        next.delete(commentId)
+        return next
+      })
     }
   }
 
@@ -215,7 +236,13 @@ export default function Comments({ postId }: CommentsProps) {
 
       <ul className="comment-list">
         {loaded && comments.length === 0 ? (
-          <li className="comment-list__empty zine-body">{tc('empty')}</li>
+          loadError ? (
+            <li className="comment-list__error zine-body" role="alert">
+              {tc('errorGeneric')}
+            </li>
+          ) : (
+            <li className="comment-list__empty zine-body">{tc('empty')}</li>
+          )
         ) : null}
 
         {comments.map((c) => (
@@ -233,6 +260,7 @@ export default function Comments({ postId }: CommentsProps) {
               className="comment__like btn-zine"
               aria-pressed={liked[c.id] ?? false}
               onClick={() => toggleLike(c.id)}
+              disabled={pendingLikes.has(c.id)}
             >
               <span aria-hidden="true">♥</span> {t('likes', { count: c.likeCount })}
             </button>
