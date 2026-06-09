@@ -37,10 +37,7 @@ export function Halftone({
     intensity === undefined ? undefined : { opacity: intensity }
 
   return (
-    <span
-      className={wrapperClasses}
-      style={{ position: 'relative', display: 'inline-block' }}
-    >
+    <span className={wrapperClasses}>
       {children}
       <span
         className="zine-halftone-overlay"

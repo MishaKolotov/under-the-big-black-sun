@@ -49,6 +49,11 @@
 }
 
 /* --- HALFTONE ------------------------------------------------------------- */
+/* Wrapper that positions the overlay relative to its child (used by <Halftone/>). */
+.zine-halftone {
+  position: relative;
+  display: inline-block;
+}
 /* Dot-screen wash you can lay over any box (used by <Halftone/>). */
 .zine-halftone-overlay {
   position: absolute;
