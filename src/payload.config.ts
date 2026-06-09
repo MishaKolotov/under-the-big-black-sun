@@ -45,6 +45,12 @@ export default buildConfig({
       enabled: true,
       collections: { media: true }, // Media uploads persist on Blob, never local fs
       token: process.env.BLOB_READ_WRITE_TOKEN || '',
+      // Server-side uploads (the default). Browser-direct uploads (`clientUploads: true`) register
+      // a CLIENT handler that transitively imports server-only payload internals (logger → pino →
+      // worker_threads / node:assert) into the admin's browser bundle and 500s the admin. We never
+      // need direct browser uploads for a small blog, so keep this off and route uploads through
+      // the Payload server.
+      clientUploads: false,
     }),
   ],
 })
