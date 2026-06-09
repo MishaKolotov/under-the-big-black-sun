@@ -183,6 +183,14 @@ Convenience scripts:
   embeds (YouTube / Bandcamp / SoundCloud) render freely. If a CSP is added later, its
   `frame-src` must allowlist `youtube.com`, `bandcamp.com`, and `soundcloud.com` (and their
   player subdomains) or embeds will break.
+- **404 uses `experimental.globalNotFound`.** Because the app has multiple root layouts (the
+  `(frontend)/[locale]` and `(payload)` route groups) and the frontend root layout sits under a
+  dynamic `[locale]` segment, a plain `app/not-found.tsx` cannot compose a root layout. The
+  bilingual zine 404 therefore lives in `src/app/global-not-found.tsx`, enabled by
+  `experimental: { globalNotFound: true }` in `next.config.mjs`. This flag is **experimental** in
+  Next 15.4 (expected to stabilize in a later release); if a future Next upgrade changes or
+  removes it, migrate the 404 accordingly (e.g. to the stabilized API or a route-group-scoped
+  `not-found`).
 
 ---
 
