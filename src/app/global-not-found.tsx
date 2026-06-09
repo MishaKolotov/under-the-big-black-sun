@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { zineFonts } from '@/app/(frontend)/fonts'
@@ -7,12 +8,20 @@ import '@/styles/tokens.css'
 import '@/styles/zine.css'
 import '@/styles/layout.css'
 
+export const metadata: Metadata = {
+  title: '404 — Page Not Found',
+  description: 'The page you are looking for does not exist or has been moved.',
+}
+
 /**
- * Root-level 404. This renders OUTSIDE the [locale] segment, so there's no
- * NextIntlClientProvider and no locale param available — we own <html>/<body>
- * here and use bilingual (EN / PL) copy rather than next-intl lookups.
+ * Global 404. The app uses multiple root layouts via route groups
+ * (`(frontend)/[locale]/layout.tsx` and `(payload)/layout.tsx`) and there is no
+ * top-level `app/layout.tsx`, so a bare `not-found.tsx` has no root layout
+ * ancestor. `global-not-found` is Next's purpose-built solution for this case:
+ * it renders OUTSIDE any layout, so we own <html>/<body> here and use bilingual
+ * (EN / PL) copy rather than next-intl lookups.
  */
-export default function NotFound() {
+export default function GlobalNotFound() {
   return (
     <html lang="en" className={zineFonts}>
       <body>
