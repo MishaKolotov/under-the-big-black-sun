@@ -1,4 +1,0 @@
-# Placeholder so the migrations directory exists in version control.
-# Real migration files appear here after running `pnpm migrate:create <name>`
-# against a database (DATABASE_URL set). They are committed and run at build
-# time on Vercel via `payload migrate` (see README > Migrations).
