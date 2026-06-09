@@ -4,6 +4,13 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { buildConfig } from 'payload'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { Users } from './collections/Users'
+import { Posts } from './collections/Posts'
+import { Media } from './collections/Media'
+import { Comments } from './collections/Comments'
+import { CommentLikes } from './collections/CommentLikes'
+import { RateLimits } from './collections/RateLimits'
+import { Settings } from './globals/Settings'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -20,8 +27,8 @@ export default buildConfig({
   admin: { user: 'users' },
   // Collections + globals are added by the schema subagent (Task 4). Leave these placeholder
   // arrays so the schema subagent only edits collection imports/arrays, not the rest of this file.
-  collections: [], // schema subagent replaces with imported collection configs
-  globals: [], // schema subagent adds Settings global
+  collections: [Users, Posts, Media, Comments, CommentLikes, RateLimits],
+  globals: [Settings],
   // EN/PL localization. fallback:true => empty PL falls back to EN. next-intl owns the URL
   // segment; this `locale` is what the frontend passes to payload.find({ locale }).
   localization: { locales: ['en', 'pl'], defaultLocale: 'en', fallback: true },
