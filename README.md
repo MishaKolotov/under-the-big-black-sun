@@ -72,7 +72,9 @@ pnpm seed
 
 Creates one published example post (EN + PL) plus one approved comment. It is **idempotent**
 (upserts by the slug `example-post`, so re-running does nothing new). Requires a valid
-`DATABASE_URL` and `BLOB_READ_WRITE_TOKEN` in `.env`.
+`DATABASE_URL` and `BLOB_READ_WRITE_TOKEN` in `.env` — the `seed` script loads `.env`
+automatically via `tsx --env-file=.env` (unlike `next`, a bare `tsx` script does not read `.env`
+on its own).
 
 ---
 
