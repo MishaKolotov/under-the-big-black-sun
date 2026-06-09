@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getPayloadClient } from '@/lib/payloadClient'
 import { checkRateLimit, getIp } from '@/lib/rateLimit'
-import { cleanComment, escapeHtml } from '@/lib/sanitize'
+import { cleanComment } from '@/lib/sanitize'
 import { likeCount } from '@/lib/likeCount'
 
 // Public comment endpoints. Note: the comments collection's create/read access is admin-only,
@@ -35,11 +35,13 @@ export async function GET(req: Request) {
       },
     })
 
+    // Returned as raw text; the React client renders it as a text child, which is auto-escaped —
+    // safe against XSS. Never render this via dangerouslySetInnerHTML.
     const comments: CommentDTO[] = await Promise.all(
       result.docs.map(async (c) => ({
         id: String(c.id),
-        nickname: escapeHtml(c.nickname),
-        body: escapeHtml(c.body),
+        nickname: c.nickname,
+        body: c.body,
         createdAt: c.createdAt,
         likeCount: await likeCount(payload, c.id),
       })),
@@ -101,6 +103,8 @@ export async function POST(req: Request) {
       },
     })
 
+    // Returned as raw text; the React client renders it as a text child, which is auto-escaped —
+    // safe against XSS. Never render this via dangerouslySetInnerHTML.
     const dto: CommentDTO = {
       id: String(created.id),
       nickname: cleaned.nickname,

@@ -19,6 +19,8 @@ export const checkRateLimit = async (
 ): Promise<boolean> => {
   const since = new Date(Date.now() - WINDOW_MS).toISOString()
 
+  // Best-effort throttle: the prune/count/create sequence is non-transactional, so a concurrent
+  // burst could let a few extra requests through — acceptable for this use case.
   // Prune rows older than the window for this ip+action (keeps the table small), then count
   // what remains inside the window. overrideAccess defaults to true for Local API.
   await payload.delete({

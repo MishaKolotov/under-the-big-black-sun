@@ -36,13 +36,17 @@ export async function GET(req: Request) {
     // Keyset cursor: items strictly "after" the last seen (publishedDate,id) in DESC order, i.e.
     //   publishedDate < cursorDate  OR  (publishedDate == cursorDate AND id < cursorId)
     if (cursorDate && cursorId) {
+      const cursorIdNum = Number(cursorId)
+      // Reject garbage cursors with a clean 400 instead of letting NaN reach the query and 500.
+      if (!Number.isFinite(cursorIdNum))
+        return NextResponse.json({ error: 'invalid cursor' }, { status: 400 })
       clauses.push({
         or: [
           { publishedDate: { less_than: cursorDate } },
           {
             and: [
               { publishedDate: { equals: cursorDate } },
-              { id: { less_than: Number(cursorId) } },
+              { id: { less_than: cursorIdNum } },
             ],
           },
         ],

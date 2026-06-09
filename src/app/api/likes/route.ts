@@ -43,11 +43,21 @@ export async function POST(req: Request) {
       })
       liked = false
     } else {
-      await payload.create({
-        collection: 'comment-likes',
-        overrideAccess: true,
-        data: { comment: Number(commentId), anonId },
-      })
+      try {
+        await payload.create({
+          collection: 'comment-likes',
+          overrideAccess: true,
+          data: { comment: Number(commentId), anonId },
+        })
+      } catch {
+        // Unique-index race: a concurrent double-tap already inserted the (comment, anonId) row,
+        // tripping the unique constraint. Treat as "already liked" and return the current state
+        // instead of surfacing a 500.
+        return NextResponse.json({
+          liked: true,
+          likeCount: await likeCount(payload, Number(commentId)),
+        })
+      }
       liked = true
     }
 
