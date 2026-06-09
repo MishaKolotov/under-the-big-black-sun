@@ -15,7 +15,7 @@ type CommentDTO = {
   likeCount: number
 }
 
-// GET /api/comments?post=<id> -> { comments: CommentDTO[] }
+// GET /api/public/comments?post=<id> -> { comments: CommentDTO[] }
 export async function GET(req: Request) {
   try {
     const postParam = new URL(req.url).searchParams.get('post')
@@ -56,7 +56,7 @@ export async function GET(req: Request) {
   }
 }
 
-// POST /api/comments -> 201 { comment: CommentDTO, pending: boolean }
+// POST /api/public/comments -> 201 { comment: CommentDTO, pending: boolean }
 export async function POST(req: Request) {
   try {
     const body = (await req.json().catch(() => null)) as

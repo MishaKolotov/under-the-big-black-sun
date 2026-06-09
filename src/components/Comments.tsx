@@ -43,7 +43,7 @@ export default function Comments({ postId }: CommentsProps) {
     let active = true
     void (async () => {
       try {
-        const res = await fetch(`/api/comments?post=${encodeURIComponent(postId)}`)
+        const res = await fetch(`/api/public/comments?post=${encodeURIComponent(postId)}`)
         if (!res.ok) {
           if (active) setLoadError(true)
           return
@@ -80,7 +80,7 @@ export default function Comments({ postId }: CommentsProps) {
     )
 
     try {
-      const res = await fetch('/api/likes', {
+      const res = await fetch('/api/public/likes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ comment: commentId, anonId: getAnonId() }),
@@ -125,7 +125,7 @@ export default function Comments({ postId }: CommentsProps) {
 
     setSubmitting(true)
     try {
-      const res = await fetch('/api/comments', {
+      const res = await fetch('/api/public/comments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ post: postId, nickname, body, website }),

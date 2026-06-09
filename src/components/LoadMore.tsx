@@ -15,7 +15,7 @@ export interface LoadMoreProps {
 }
 
 /**
- * CLIENT cursor-pagination control. Fetches /api/posts with the seeded keyset cursor,
+ * CLIENT cursor-pagination control. Fetches /api/public/posts with the seeded keyset cursor,
  * appends the returned cards, and hides itself when nextCursor is null. Not infinite
  * scroll, not numbered pages.
  */
@@ -40,7 +40,7 @@ export function LoadMore({ initialCursor, limit = 6 }: LoadMoreProps) {
         cursorDate: cursor.date,
         cursorId: cursor.id,
       })
-      const res = await fetch(`/api/posts?${params.toString()}`)
+      const res = await fetch(`/api/public/posts?${params.toString()}`)
       if (!res.ok) return
       const data: ApiResponse = await res.json()
       setItems((prev) => [...prev, ...data.items])

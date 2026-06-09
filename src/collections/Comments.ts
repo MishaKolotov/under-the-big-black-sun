@@ -2,7 +2,7 @@ import type { CollectionConfig } from 'payload'
 import { isAdmin, approvedOrAdmin } from '../access'
 import { cascadeDeleteCommentLikes } from '../hooks/cascadeDelete'
 
-// Public CREATE happens ONLY through /api/comments (Local API w/ overrideAccess), so direct
+// Public CREATE happens ONLY through /api/public/comments (Local API w/ overrideAccess), so direct
 // REST create is admin-only here; anon read = approved only.
 export const Comments: CollectionConfig = {
   slug: 'comments',

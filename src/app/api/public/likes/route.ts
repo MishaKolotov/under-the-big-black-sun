@@ -3,7 +3,7 @@ import { getPayloadClient } from '@/lib/payloadClient'
 import { checkRateLimit, getIp } from '@/lib/rateLimit'
 import { likeCount } from '@/lib/likeCount'
 
-// POST /api/likes -> 200 { liked: boolean, likeCount: number }
+// POST /api/public/likes -> 200 { liked: boolean, likeCount: number }
 // Toggle: one row per (comment, anonId). Create if absent (liked=true), delete if present
 // (liked=false). The collection has a unique compound index on (comment, anonId).
 export async function POST(req: Request) {

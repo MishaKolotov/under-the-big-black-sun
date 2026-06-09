@@ -15,7 +15,7 @@ type PostCard = {
 
 const isLocale = (v: string | null): v is Locale => locales.includes((v ?? '') as Locale)
 
-// GET /api/posts?locale=&limit=&cursorDate=&cursorId=
+// GET /api/public/posts?locale=&limit=&cursorDate=&cursorId=
 // Order: publishedDate DESC, id DESC. Keyset/cursor pagination via a compound (date,id) clause.
 export async function GET(req: Request) {
   try {

@@ -2,7 +2,7 @@ import { getPayloadClient } from '@/lib/payloadClient'
 import type { Locale } from '@/i18n/config'
 import type { Media, Post } from '@/payload-types'
 
-// Shared frontend DTO — mirrors PostCard from CONTRACTS.md / the /api/posts route.
+// Shared frontend DTO — mirrors PostCard from CONTRACTS.md / the /api/public/posts route.
 export type PostCard = {
   id: string
   slug: string
@@ -37,7 +37,7 @@ const toCard = (p: Post): PostCard => ({
 
 /**
  * First page of published posts for the home list, locale-aware.
- * Order: publishedDate DESC, id DESC — identical to /api/posts so the
+ * Order: publishedDate DESC, id DESC — identical to /api/public/posts so the
  * LoadMore cursor keeps walking the same sequence.
  */
 export async function getHomePosts(

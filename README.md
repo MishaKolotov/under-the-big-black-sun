@@ -178,8 +178,8 @@ Convenience scripts:
   *polite* one-like-per-visitor barrier, **not fraud protection**. No login or fingerprinting is
   used by design.
 - **GET endpoints are cache-controlled, not hard rate-limited.** The public read endpoints
-  (`GET /api/posts`, `GET /api/comments`) rely on `Cache-Control` headers, not a per-IP read
-  throttle. Write endpoints (`POST /api/comments`, `POST /api/likes`) *are* rate-limited per IP
+  (`GET /api/public/posts`, `GET /api/public/comments`) rely on `Cache-Control` headers, not a per-IP read
+  throttle. Write endpoints (`POST /api/public/comments`, `POST /api/public/likes`) *are* rate-limited per IP
   (comments ≤ 5 / 10 min, likes ≤ 60 / 10 min).
 - **No custom Content-Security-Policy.** There is intentionally no custom CSP so third-party
   embeds (YouTube / Bandcamp / SoundCloud) render freely. If a CSP is added later, its
