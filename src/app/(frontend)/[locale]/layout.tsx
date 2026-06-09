@@ -10,6 +10,7 @@ import { PaperBg } from '@/components/zine/PaperBg'
 import { RansomHeading } from '@/components/zine/RansomHeading'
 import '@/styles/tokens.css'
 import '@/styles/zine.css'
+import '@/styles/layout.css'
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))

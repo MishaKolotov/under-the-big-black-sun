@@ -5,6 +5,7 @@ import { PaperBg } from '@/components/zine/PaperBg'
 import { RansomHeading } from '@/components/zine/RansomHeading'
 import '@/styles/tokens.css'
 import '@/styles/zine.css'
+import '@/styles/layout.css'
 
 /**
  * Root-level 404. This renders OUTSIDE the [locale] segment, so there's no
