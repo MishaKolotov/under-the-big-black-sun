@@ -32,6 +32,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={siteFonts}>
       <body>
+        <NextIntlClientProvider locale={locale} messages={messages}>
         <div className="site-shell">
           <header className="site-header">
             <Link href="/" className="site-header__title">
@@ -51,6 +52,7 @@ export default async function LocaleLayout({
             <p>{t('footerTagline')} · {new Date().getFullYear()}</p>
           </footer>
         </div>
+        </NextIntlClientProvider>
       </body>
     </html>
   )
