@@ -12,14 +12,16 @@ export interface LoadMoreProps {
   initialCursor: Cursor | null
   /** Page size — matches the server's first-page limit. */
   limit?: number
+  /** Count of rows already rendered by the server — numbering continues from here. */
+  startIndex?: number
 }
 
 /**
  * CLIENT cursor-pagination control. Fetches /api/public/posts with the seeded keyset cursor,
- * appends the returned cards, and hides itself when nextCursor is null. Not infinite
- * scroll, not numbered pages.
+ * appends the returned rows (numbering continues from the server-rendered list), and hides
+ * itself when nextCursor is null. Not infinite scroll, not numbered pages.
  */
-export function LoadMore({ initialCursor, limit = 6 }: LoadMoreProps) {
+export function LoadMore({ initialCursor, limit = 6, startIndex = 0 }: LoadMoreProps) {
   const locale = useLocale()
   const t = useTranslations('Home')
   const format = useFormatter()
@@ -28,7 +30,8 @@ export function LoadMore({ initialCursor, limit = 6 }: LoadMoreProps) {
   const [cursor, setCursor] = useState<Cursor | null>(initialCursor)
   const [loading, setLoading] = useState(false)
 
-  const formatDate = (iso: string) => format.dateTime(new Date(iso), { dateStyle: 'long' })
+  const formatDate = (iso: string) =>
+    format.dateTime(new Date(iso), { day: '2-digit', month: '2-digit' })
 
   const loadMore = async () => {
     if (!cursor || loading) return
@@ -53,21 +56,21 @@ export function LoadMore({ initialCursor, limit = 6 }: LoadMoreProps) {
   return (
     <>
       {items.length > 0 ? (
-        <div className="post-grid">
-          {items.map((post) => (
-            <PostCardItem key={post.id} post={post} formattedDate={formatDate(post.publishedDate)} />
+        <ol className="post-list post-list--tail" start={startIndex + 1}>
+          {items.map((post, i) => (
+            <PostCardItem
+              key={post.id}
+              post={post}
+              index={startIndex + i + 1}
+              formattedDate={formatDate(post.publishedDate)}
+            />
           ))}
-        </div>
+        </ol>
       ) : null}
 
       {cursor ? (
         <div className="load-more">
-          <button
-            type="button"
-            className="btn-zine zine-border zine-shadow-sm"
-            onClick={loadMore}
-            disabled={loading}
-          >
+          <button type="button" className="btn-press" onClick={loadMore} disabled={loading}>
             {t('loadMore')}
           </button>
         </div>

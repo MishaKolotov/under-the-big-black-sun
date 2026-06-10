@@ -3,12 +3,17 @@
     "home": "Strona główna",
     "about": "O nas",
     "language": "Język",
-    "siteTitle": "Under Big Black Sun"
+    "siteTitle": "Under Big Black Sun",
+    "footerTagline": "jeden kolor naraz"
   },
   "Home": {
     "latestPosts": "Najnowsze wpisy",
     "loadMore": "Załaduj więcej",
-    "noPosts": "Brak wpisów."
+    "noPosts": "Brak wpisów.",
+    "sideA": "Lado A — flyery · ziny · riso (Warszawa)",
+    "sideB": "Lado B — perkusja · ksero · commissions open 2026",
+    "metaRole": "ilustrator i perkusista",
+    "metaOneInk": "jeden kolor naraz"
   },
   "Post": {
     "publishedOn": "Opublikowano {date}",

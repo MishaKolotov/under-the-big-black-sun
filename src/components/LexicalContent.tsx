@@ -67,7 +67,7 @@ export interface LexicalContentProps {
 export default function LexicalContent({ data, className }: LexicalContentProps) {
   return (
     <RichText
-      className={['zine-prose', className].filter(Boolean).join(' ')}
+      className={['prose', className].filter(Boolean).join(' ')}
       converters={jsxConverters}
       // RichText's `data` is the serialized editor state; Payload's generated type is looser.
       data={data as Parameters<typeof RichText>[0]['data']}

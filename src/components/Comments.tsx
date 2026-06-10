@@ -157,15 +157,15 @@ export default function Comments({ postId }: CommentsProps) {
 
   return (
     <section className="comments" aria-labelledby="comments-heading">
-      <h2 id="comments-heading" className="comments__heading zine-display">
+      <h2 id="comments-heading" className="comments__heading">
         {t('comments')}
       </h2>
 
-      <form className="comment-form zine-border" onSubmit={onSubmit} noValidate>
-        <h3 className="zine-stamp">{t('leaveComment')}</h3>
+      <form className="comment-form" onSubmit={onSubmit} noValidate>
+        <h3>{t('leaveComment')}</h3>
 
         <label className="comment-form__field">
-          <span className="zine-stamp">{t('nickname')}</span>
+          <span>{t('nickname')}</span>
           <input
             type="text"
             name="nickname"
@@ -178,7 +178,7 @@ export default function Comments({ postId }: CommentsProps) {
         </label>
 
         <label className="comment-form__field">
-          <span className="zine-stamp">{t('commentBody')}</span>
+          <span>{t('commentBody')}</span>
           <textarea
             name="body"
             value={body}
@@ -227,7 +227,7 @@ export default function Comments({ postId }: CommentsProps) {
 
         <button
           type="submit"
-          className="btn-zine zine-border zine-shadow-sm"
+          className="btn-press"
           disabled={submitting}
         >
           {t('submit')}
@@ -237,27 +237,27 @@ export default function Comments({ postId }: CommentsProps) {
       <ul className="comment-list">
         {loaded && comments.length === 0 ? (
           loadError ? (
-            <li className="comment-list__error zine-body" role="alert">
+            <li className="comment-list__error" role="alert">
               {tc('errorGeneric')}
             </li>
           ) : (
-            <li className="comment-list__empty zine-body">{tc('empty')}</li>
+            <li className="comment-list__empty">{tc('empty')}</li>
           )
         ) : null}
 
         {comments.map((c) => (
-          <li key={c.id} className="comment zine-border">
+          <li key={c.id} className="comment">
             <div className="comment__meta">
-              <span className="comment__nickname zine-stamp">{c.nickname}</span>
-              <time className="comment__date zine-stamp" dateTime={c.createdAt}>
+              <span className="comment__nickname">{c.nickname}</span>
+              <time className="comment__date stamp" dateTime={c.createdAt}>
                 {format.dateTime(new Date(c.createdAt), { dateStyle: 'medium' })}
               </time>
             </div>
             {/* RAW text from backend — React escapes it. Never dangerouslySetInnerHTML. */}
-            <p className="comment__body zine-body">{c.body}</p>
+            <p className="comment__body">{c.body}</p>
             <button
               type="button"
-              className="comment__like btn-zine"
+              className="comment__like btn-press"
               aria-pressed={liked[c.id] ?? false}
               onClick={() => toggleLike(c.id)}
               disabled={pendingLikes.has(c.id)}

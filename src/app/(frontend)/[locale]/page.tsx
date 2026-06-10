@@ -4,7 +4,6 @@ import { locales, type Locale } from '@/i18n/config'
 import { getHomePosts } from '@/lib/getPosts'
 import PostCardItem from '@/components/PostCardItem'
 import LoadMore from '@/components/LoadMore'
-import { RansomHeading } from '@/components/zine/RansomHeading'
 
 export const revalidate = 60
 
@@ -24,29 +23,51 @@ export default async function HomePage({
   setRequestLocale(locale)
 
   const t = await getTranslations('Home')
+  const tNav = await getTranslations('Nav')
   const format = await getFormatter()
   const { items, nextCursor } = await getHomePosts(locale as Locale, PAGE_SIZE)
 
-  const formatDate = (iso: string) => format.dateTime(new Date(iso), { dateStyle: 'long' })
+  const formatDate = (iso: string) =>
+    format.dateTime(new Date(iso), { day: '2-digit', month: '2-digit' })
+
+  const title = tNav('siteTitle')
 
   return (
     <div className="home">
-      <RansomHeading text={t('latestPosts')} level={2} className="home__heading" />
+      <header className="home__hero">
+        <h1 className="home__stack">
+          <span>{title}</span>
+          <span aria-hidden="true">{title}</span>
+          <span aria-hidden="true">{title}</span>
+        </h1>
+        <div className="home__side" aria-hidden="true">
+          <span>{t('sideA')}</span>
+          <span>{t('sideB')}</span>
+        </div>
+      </header>
+
+      <p className="home__meta">
+        <span>
+          <b>Karol</b> — {t('metaRole')}
+        </span>
+        <span>{t('metaOneInk')}</span>
+      </p>
 
       {items.length === 0 ? (
-        <p className="home__empty zine-body">{t('noPosts')}</p>
+        <p className="home__empty">{t('noPosts')}</p>
       ) : (
         <>
-          <div className="post-grid">
-            {items.map((post) => (
+          <ol className="post-list">
+            {items.map((post, i) => (
               <PostCardItem
                 key={post.id}
                 post={post}
+                index={i + 1}
                 formattedDate={formatDate(post.publishedDate)}
               />
             ))}
-          </div>
-          <LoadMore initialCursor={nextCursor} limit={PAGE_SIZE} />
+          </ol>
+          <LoadMore initialCursor={nextCursor} limit={PAGE_SIZE} startIndex={items.length} />
         </>
       )}
     </div>

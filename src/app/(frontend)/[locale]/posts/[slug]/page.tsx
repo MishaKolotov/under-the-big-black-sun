@@ -7,7 +7,6 @@ import { getPostBySlug, getPublishedSlugs } from '@/lib/getPosts'
 import type { Media } from '@/payload-types'
 import LexicalContent, { type LexicalContentData } from '@/components/LexicalContent'
 import Comments from '@/components/Comments'
-import { RansomHeading } from '@/components/zine/RansomHeading'
 
 export const revalidate = 60
 
@@ -87,8 +86,8 @@ export default async function PostPage({
   return (
     <article className="post">
       <header className="post__header">
-        <RansomHeading text={post.title} level={1} className="post__title" />
-        <p className="post__date zine-stamp">
+        <h1 className="post__title">{post.title}</h1>
+        <p className="post__date stamp">
           {t('publishedOn', {
             date: format.dateTime(new Date(publishedISO), { dateStyle: 'long' }),
           })}
@@ -97,7 +96,7 @@ export default async function PostPage({
 
       {cover?.url ? (
         <Image
-          className="post__cover zine-halftone-img"
+          className="post__cover"
           src={cover.url}
           alt={cover.alt ?? ''}
           width={cover.width ?? 1200}

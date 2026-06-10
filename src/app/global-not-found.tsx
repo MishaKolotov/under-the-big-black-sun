@@ -1,11 +1,8 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { zineFonts } from '@/app/(frontend)/fonts'
-import { PaperBg } from '@/components/zine/PaperBg'
-import { RansomHeading } from '@/components/zine/RansomHeading'
+import { siteFonts } from '@/app/(frontend)/fonts'
 import '@/styles/tokens.css'
-import '@/styles/zine.css'
 import '@/styles/layout.css'
 
 export const metadata: Metadata = {
@@ -23,32 +20,30 @@ export const metadata: Metadata = {
  */
 export default function GlobalNotFound() {
   return (
-    <html lang="en" className={zineFonts}>
+    <html lang="en" className={siteFonts}>
       <body>
-        <PaperBg as="div" withGrain className="not-found">
-          <RansomHeading text="404" level={1} className="not-found__code" />
+        <div className="not-found">
+          <h1 className="not-found__code">404</h1>
           <Image
-            className="not-found__art zine-halftone-img"
+            className="not-found__art"
             src="/assets/404-tiger.png"
             alt="A scratchy hand-drawn tiger"
             width={480}
             height={480}
             priority
           />
-          <h2 className="not-found__title zine-display">
-            Page not found / Nie znaleziono strony
-          </h2>
-          <p className="not-found__message zine-body">
+          <h2 className="not-found__title">Page not found / Nie znaleziono strony</h2>
+          <p className="not-found__message">
             The page you&rsquo;re looking for doesn&rsquo;t exist or has been moved.
             <br />
             Strona, której szukasz, nie istnieje lub została przeniesiona.
           </p>
-          <p className="not-found__links zine-stamp">
+          <p className="not-found__links stamp">
             <Link href="/en">Back to home</Link>
             {' · '}
             <Link href="/pl">Wróć na stronę główną</Link>
           </p>
-        </PaperBg>
+        </div>
       </body>
     </html>
   )

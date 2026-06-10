@@ -1,8 +1,6 @@
 import { notFound } from 'next/navigation'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { locales, type Locale } from '@/i18n/config'
-import { RansomHeading } from '@/components/zine/RansomHeading'
-import { Sticker } from '@/components/zine/Sticker'
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
@@ -27,18 +25,16 @@ export default async function AboutPage({
 
   return (
     <div className="about">
-      <RansomHeading text={t('title')} level={1} className="about__heading" />
-      <p className="about__bio zine-body">{t('bioPlaceholder')}</p>
+      <h1 className="about__heading">{t('title')}</h1>
+      <p className="about__bio">{t('bioPlaceholder')}</p>
 
       <section className="about__links" aria-labelledby="about-links-heading">
-        <h2 id="about-links-heading" className="zine-display">
-          {t('linksTitle')}
-        </h2>
+        <h2 id="about-links-heading">{t('linksTitle')}</h2>
         <ul className="about__link-list">
           {links.map((link) => (
             <li key={link.key}>
-              <a href={link.href} className="about__link">
-                <Sticker tone="yellow">{t(link.key)}</Sticker>
+              <a href={link.href} className="drip-chip">
+                {t(link.key)}
               </a>
             </li>
           ))}

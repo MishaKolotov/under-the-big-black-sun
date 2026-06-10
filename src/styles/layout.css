@@ -1,13 +1,11 @@
 /* ==========================================================================
-   layout.css — STRUCTURAL / LAYOUT layer for the zine frontend.
-   Owns every BEM-ish structural class used in the page/component markup
-   (shell, header, grids, cards, prose, comments, buttons, 404).
-   Consumes tokens.css custom properties; builds on the zine-* decorative
-   utilities in zine.css (import order: tokens.css -> zine.css -> layout.css).
-   Mobile-first, responsive, WCAG-AA, honors prefers-reduced-motion.
+   layout.css — STRUCTURAL layer for Direction A: "One pass".
+   White sheet, one cobalt ink, hairline rules, italic serif display,
+   mono body. Zero texture, zero rotation. Consumes tokens.css.
+   Mobile-first, WCAG-AA, honors prefers-reduced-motion.
    ========================================================================== */
 
-/* --- BASE RESET (light; just enough to make layout predictable) ---------- */
+/* --- BASE RESET ----------------------------------------------------------- */
 *,
 *::before,
 *::after {
@@ -33,11 +31,14 @@ img {
   max-width: 100%;
 }
 
+::selection {
+  background: var(--ink);
+  color: var(--paper);
+}
+
 /* ==========================================================================
    SHELL / HEADER / FOOTER
    ========================================================================== */
-
-/* Sticky-footer column. (.site-shell is also .zine-paper, so it's positioned.) */
 .site-shell {
   display: flex;
   flex-direction: column;
@@ -48,331 +49,498 @@ img {
 .site-header {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: baseline;
   justify-content: space-between;
-  gap: var(--space-3) var(--space-5);
-  padding: var(--space-5) var(--space-5) var(--space-4);
-  border-bottom: var(--stroke-bold) solid var(--ink);
+  gap: var(--space-2) var(--space-5);
+  padding: var(--space-5) var(--space-5) var(--space-3);
+  border-bottom: var(--rule) solid var(--hairline);
 }
 
 .site-header__title {
-  display: inline-block;
-  text-decoration: none;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.1875rem;
+  letter-spacing: 0.02em;
   color: var(--ink);
+  text-decoration: none;
 }
 .site-header__title:focus-visible {
-  outline: var(--stroke) solid var(--ink);
+  outline: var(--rule) solid var(--ink);
   outline-offset: var(--space-1);
 }
 
 .site-nav {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2) var(--space-4);
-  font-family: var(--font-stamp);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-5);
+  font-size: var(--fs-small);
+  text-transform: lowercase;
+  letter-spacing: var(--track-nav);
 }
 .site-nav a {
   color: var(--ink);
   text-decoration: none;
-  border-bottom: var(--stroke) solid transparent;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 1px;
 }
-.site-nav a:hover {
+.site-nav a:hover,
+.site-nav a[aria-current='page'] {
   border-bottom-color: var(--ink);
 }
 .site-nav a:focus-visible {
-  outline: var(--stroke) solid var(--ink);
+  outline: var(--rule) solid var(--ink);
   outline-offset: var(--space-1);
 }
 
-/* Centered readable content container that grows to push the footer down. */
 .site-main {
   flex: 1 1 auto;
   width: 100%;
   max-width: 960px;
   margin-inline: auto;
-  padding: var(--space-6) var(--space-5) var(--space-8);
+  padding: var(--space-6) var(--space-5) var(--space-12);
 }
 
 .site-footer {
-  border-top: var(--stroke-bold) solid var(--ink);
-  padding: var(--space-5);
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-size: var(--fs-small);
+  border-top: var(--rule) solid var(--hairline);
+  padding: var(--space-4) var(--space-5);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-5);
+  font-size: var(--fs-micro);
+  text-transform: lowercase;
+  letter-spacing: var(--track-label);
 }
 .site-footer p {
   margin: 0;
 }
 
-/* Language switcher (small in-header control). */
+/* --- LANGUAGE SWITCHER ----------------------------------------------------*/
 .lang-switcher {
   display: inline-flex;
+  align-items: baseline;
   gap: var(--space-1);
 }
 .lang-switcher button {
-  font-family: var(--font-stamp);
+  font-family: var(--font-body);
   font-size: var(--fs-small);
-  letter-spacing: 0.06em;
-  padding: var(--space-1) var(--space-2);
-  background: var(--paper-bright);
+  text-transform: lowercase;
+  letter-spacing: var(--track-nav);
+  padding: 0 var(--space-1) 1px;
+  background: transparent;
   color: var(--ink);
-  border: var(--stroke) solid var(--ink);
-  border-radius: var(--radius);
+  border: 0;
+  border-bottom: 2px solid transparent;
   cursor: pointer;
 }
 .lang-switcher button:hover:not([disabled]) {
-  background: var(--highlighter);
+  border-bottom-color: var(--ink-faint);
 }
 .lang-switcher button:focus-visible {
-  outline: var(--stroke) solid var(--ink);
+  outline: var(--rule) solid var(--ink);
   outline-offset: var(--space-1);
 }
-/* Active locale = current sheet; black bg + yellow ink (sanctioned context). */
+/* Active locale = the current pass. */
 .lang-switcher button[aria-current='true'],
 .lang-switcher button[disabled] {
-  background: var(--ink);
-  color: var(--highlighter);
+  border-bottom-color: var(--ink);
+  font-weight: 700;
   cursor: default;
 }
 
 /* ==========================================================================
-   HOME
+   STAMP — small uppercase-feel mono label (dates, meta). Lowercase per voice.
+   ========================================================================== */
+.stamp {
+  font-family: var(--font-body);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--track-label);
+  text-transform: lowercase;
+}
+
+/* ==========================================================================
+   HOME — flooded white sheet: stacked echo title, vertical margin text,
+   meta line, numbered post list.
    ========================================================================== */
 .home {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
-}
-.home__heading {
-  margin: 0;
-}
-.home__empty {
-  margin: 0;
 }
 
-/* Responsive card grid: 1 col on mobile, auto-fill wider sheets. */
-.post-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-6);
+.home__hero {
+  position: relative;
+  padding: var(--space-8) 0 0;
 }
-@media (min-width: 40rem) {
-  .post-grid {
-    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+
+.home__stack {
+  margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: var(--fs-display);
+  line-height: 1.04;
+  letter-spacing: 0.005em;
+  text-transform: none;
+}
+.home__stack span {
+  display: block;
+  white-space: nowrap;
+}
+.home__stack span:nth-child(2) {
+  opacity: 0.75;
+  margin-left: clamp(1rem, 4vw, 2.375rem);
+}
+.home__stack span:nth-child(3) {
+  opacity: 0.5;
+  margin-left: clamp(2rem, 8vw, 4.75rem);
+}
+
+/* Vertical margin text — the crammed flyer edge. Decorative; hidden on phones. */
+.home__side {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  max-height: 420px;
+  writing-mode: vertical-rl;
+  font-size: var(--fs-micro);
+  letter-spacing: var(--track-label);
+  display: none;
+  gap: var(--space-4);
+  align-items: flex-start;
+}
+@media (min-width: 48rem) {
+  .home__side {
+    display: flex;
   }
 }
 
-.load-more {
+.home__meta {
   display: flex;
-  justify-content: center;
-  margin-top: var(--space-6);
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+  padding: var(--space-5) 0 0;
+  font-size: var(--fs-small);
+}
+.home__meta b {
+  font-weight: 700;
 }
 
-/* ==========================================================================
-   POST CARD
-   ========================================================================== */
-.post-card {
-  background: var(--paper-bright);
-  /* slight cut-and-paste wobble; one card leans against the grid */
-  transition: transform 120ms ease, box-shadow 120ms ease;
-}
-.post-card:hover {
-  transform: rotate(calc(-1 * var(--tilt-xs)));
-  box-shadow: var(--shadow-hard);
+.home__empty {
+  margin: var(--space-8) 0 0;
+  max-width: var(--measure);
 }
 
-.post-card__link {
-  display: block;
-  text-decoration: none;
+/* --- NUMBERED POST LIST ----------------------------------------------------*/
+.post-list {
+  margin: var(--space-8) 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0;
+  max-width: 640px;
+}
+
+.post-row {
+  border-top: var(--rule) solid var(--hairline);
+}
+.post-list > .post-row:last-child {
+  border-bottom: var(--rule) solid var(--hairline);
+}
+/* When LoadMore appends its list right after the server one, the seam
+   (previous list's bottom rule + this row's top rule) stays a single hairline. */
+.post-list--tail {
+  margin-top: 0;
+}
+.post-list--tail > .post-row:first-child {
+  border-top: 0;
+}
+
+.post-row__link {
+  display: grid;
+  grid-template-columns: 2.75rem 1fr auto;
+  gap: var(--space-4);
+  align-items: baseline;
+  padding: var(--space-4) 0;
   color: var(--ink);
-  height: 100%;
+  text-decoration: none;
 }
-.post-card__link:focus-visible {
-  outline: var(--stroke-bold) solid var(--ink);
+.post-row__link:hover .post-row__title,
+.post-row__link:focus-visible .post-row__title {
+  text-decoration: underline;
+  text-decoration-thickness: var(--rule);
+  text-underline-offset: 0.18em;
+}
+.post-row__link:focus-visible {
+  outline: var(--rule) solid var(--ink);
   outline-offset: 2px;
 }
 
-.post-card__cover {
-  display: block;
-  width: 100%;
-  aspect-ratio: 3 / 2;
-  overflow: hidden;
-  border-bottom: var(--stroke) solid var(--ink);
-}
-.post-card__cover img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.post-card__body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  padding: var(--space-4);
-}
-
-.post-card__title {
-  margin: 0;
-  /* shrink the display preset to a card-appropriate size */
-  font-size: var(--fs-h3);
-  line-height: var(--lh-tight);
-}
-
-.post-card__date {
-  margin: 0;
+.post-row__num {
+  width: 1.875rem;
+  height: 1.875rem;
+  border: var(--rule) solid var(--ink);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
   font-size: var(--fs-small);
-  color: var(--ink-soft);
+  align-self: center;
 }
 
-.post-card__excerpt {
+.post-row__title {
   margin: 0;
-  /* optional clamp for tidy cards */
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: var(--fs-h3);
+  line-height: 1.25;
+}
+
+.post-row__excerpt {
+  grid-column: 2 / 3;
+  margin: var(--space-1) 0 0;
+  font-size: var(--fs-small);
+  line-height: 1.55;
+  color: var(--ink-soft);
   display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
+.post-row__date {
+  font-size: var(--fs-micro);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+.load-more {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: var(--space-6);
+  max-width: 640px;
+}
+
 /* ==========================================================================
-   POST PAGE
+   BTN-PRESS — one-ink button: hairline box, ink fill on hover.
+   ========================================================================== */
+.btn-press {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-5);
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  text-transform: lowercase;
+  letter-spacing: var(--track-nav);
+  color: var(--ink);
+  background: var(--paper);
+  border: var(--rule) solid var(--ink);
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+.btn-press:hover:not([disabled]) {
+  background: var(--ink);
+  color: var(--paper);
+}
+.btn-press:focus-visible {
+  outline: var(--rule) solid var(--ink);
+  outline-offset: 2px;
+}
+.btn-press:active:not([disabled]) {
+  background: var(--ink);
+  color: var(--paper);
+}
+.btn-press[disabled] {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+/* --- DRIP CHIP — the "commissions open" bordered label with ink drips ------*/
+.drip-chip {
+  display: inline-block;
+  position: relative;
+  border: var(--rule) solid var(--ink);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--fs-small);
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.drip-chip::after {
+  content: '';
+  position: absolute;
+  left: 18px;
+  top: 100%;
+  width: 2px;
+  height: 14px;
+  background: var(--ink);
+}
+.drip-chip::before {
+  content: '';
+  position: absolute;
+  left: 52px;
+  top: 100%;
+  width: 2px;
+  height: 8px;
+  background: var(--ink);
+}
+a.drip-chip:hover,
+a.drip-chip:focus-visible {
+  background: var(--ink);
+  color: var(--paper);
+}
+a.drip-chip:focus-visible {
+  outline: var(--rule) solid var(--ink);
+  outline-offset: 3px;
+}
+
+/* ==========================================================================
+   POST PAGE — calm reading island.
    ========================================================================== */
 .post {
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
+  max-width: 720px;
 }
 
 .post__header {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-  padding-bottom: var(--space-4);
-  border-bottom: var(--stroke) solid var(--ink);
+  padding: var(--space-6) 0 var(--space-4);
+  border-bottom: var(--rule) solid var(--hairline);
 }
 
 .post__title {
   margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: var(--fs-h1);
+  line-height: var(--lh-tight);
 }
 
 .post__date {
   margin: 0;
-  font-size: var(--fs-small);
-  color: var(--ink-soft);
 }
 
+/* One pass on the press: artwork multiplies into the sheet. */
 .post__cover {
   display: block;
   width: 100%;
   height: auto;
-  border: var(--stroke) solid var(--ink);
-  box-shadow: var(--shadow-hard);
+  border: var(--rule) solid var(--ink);
+  mix-blend-mode: multiply;
 }
 
 /* ==========================================================================
-   PROSE (RichText wrapper) — readable measure + block rhythm
+   PROSE (RichText wrapper)
    ========================================================================== */
-.zine-prose {
+.prose {
   font-family: var(--font-body);
   font-size: var(--fs-body);
   line-height: var(--lh-body);
   max-width: var(--measure);
   color: var(--ink);
 }
-.zine-prose > * {
+.prose > * {
   margin-block: var(--space-4);
 }
-.zine-prose > :first-child {
+.prose > :first-child {
   margin-block-start: 0;
 }
-.zine-prose > :last-child {
+.prose > :last-child {
   margin-block-end: 0;
 }
 
-.zine-prose h1,
-.zine-prose h2,
-.zine-prose h3,
-.zine-prose h4 {
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
   font-family: var(--font-display);
-  text-transform: uppercase;
-  line-height: var(--lh-tight);
+  font-style: italic;
+  font-weight: 700;
+  line-height: 1.15;
   margin-block: var(--space-6) var(--space-3);
 }
-.zine-prose h1 { font-size: var(--fs-h1); }
-.zine-prose h2 { font-size: var(--fs-h2); }
-.zine-prose h3 { font-size: var(--fs-h3); }
-.zine-prose h4 { font-size: var(--fs-body); }
+.prose h1 { font-size: var(--fs-h1); }
+.prose h2 { font-size: var(--fs-h2); }
+.prose h3 { font-size: var(--fs-h3); }
+.prose h4 { font-size: var(--fs-body); font-style: normal; }
 
-.zine-prose a {
+.prose a {
   color: var(--ink);
+  font-weight: 700;
   text-decoration: underline;
-  text-decoration-thickness: var(--stroke);
-  text-underline-offset: 0.15em;
+  text-decoration-thickness: var(--rule);
+  text-underline-offset: 0.18em;
 }
-.zine-prose a:hover {
-  /* highlighter fill behind black text — never yellow text */
-  background: var(--highlighter);
-  text-decoration-color: var(--ink);
+.prose a:hover {
+  background: var(--ink);
+  color: var(--paper);
 }
-.zine-prose a:focus-visible {
-  outline: var(--stroke) solid var(--ink);
+.prose a:focus-visible {
+  outline: var(--rule) solid var(--ink);
   outline-offset: 2px;
 }
 
-.zine-prose ul,
-.zine-prose ol {
+.prose ul,
+.prose ol {
   padding-inline-start: var(--space-6);
 }
-.zine-prose li {
+.prose li {
   margin-block: var(--space-2);
 }
 
-.zine-prose blockquote {
+.prose blockquote {
   margin-inline: 0;
   padding: var(--space-2) var(--space-4);
-  border-left: var(--stroke-bold) solid var(--ink);
-  background: var(--paper-dim);
+  border-left: var(--rule) solid var(--ink);
+  font-family: var(--font-display);
   font-style: italic;
+  font-size: var(--fs-h3);
+  line-height: 1.4;
 }
 
-.zine-prose code {
+.prose code {
   font-family: var(--font-body);
   font-size: 0.95em;
-  background: var(--paper-dim);
+  background: var(--ink-wash);
   padding: 0.1em 0.3em;
-  border-radius: var(--radius);
 }
-.zine-prose pre {
+.prose pre {
   font-family: var(--font-body);
   background: var(--ink);
-  color: var(--paper-bright);
+  color: var(--paper);
   padding: var(--space-4);
-  border-radius: var(--radius);
   overflow-x: auto;
 }
-.zine-prose pre code {
+.prose pre code {
   background: transparent;
   padding: 0;
   color: inherit;
 }
 
-.zine-prose hr {
+.prose hr {
   border: 0;
-  border-top: var(--stroke) dashed var(--ink);
+  border-top: var(--rule) solid var(--hairline);
   margin-block: var(--space-6);
 }
 
-.zine-prose img {
+.prose img {
   max-width: 100%;
   height: auto;
   display: block;
-  border: var(--stroke) solid var(--ink);
+  border: var(--rule) solid var(--ink);
+  mix-blend-mode: multiply;
 }
 
 /* ==========================================================================
@@ -381,19 +549,37 @@ img {
 .about {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--space-6);
+  max-width: 720px;
 }
+
 .about__heading {
   margin: 0;
+  padding: var(--space-6) 0 var(--space-4);
+  border-bottom: var(--rule) solid var(--hairline);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: var(--fs-h1);
+  line-height: var(--lh-tight);
 }
+
 .about__bio {
   margin: 0;
+  max-width: var(--measure);
 }
 
 .about__links {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
+}
+.about__links h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: var(--fs-h2);
 }
 
 .about__link-list {
@@ -402,31 +588,30 @@ img {
   padding: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-4);
+  gap: var(--space-4) var(--space-5);
 }
 
-.about__link {
-  display: inline-block;
-  text-decoration: none;
-}
-.about__link:focus-visible {
-  outline: var(--stroke) solid var(--ink);
-  outline-offset: var(--space-1);
+.about__link-list .drip-chip {
+  text-transform: lowercase;
 }
 
 /* ==========================================================================
-   COMMENTS
+   COMMENTS — bulletin board, one ink.
    ========================================================================== */
 .comments {
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
   margin-top: var(--space-8);
-  padding-top: var(--space-6);
-  border-top: var(--stroke-bold) solid var(--ink);
+  padding-top: var(--space-5);
+  border-top: var(--rule) solid var(--hairline);
 }
 .comments__heading {
   margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: var(--fs-h2);
 }
 
 .comment-form {
@@ -434,11 +619,14 @@ img {
   flex-direction: column;
   gap: var(--space-4);
   padding: var(--space-5);
-  background: var(--paper-bright);
+  border: var(--rule) solid var(--hairline);
 }
 .comment-form h3 {
   margin: 0;
-  text-transform: uppercase;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: var(--fs-h3);
 }
 
 .comment-form__field {
@@ -447,12 +635,11 @@ img {
   gap: var(--space-2);
 }
 .comment-form__field > span {
-  text-transform: uppercase;
-  font-size: var(--fs-small);
-  letter-spacing: 0.04em;
+  font-size: var(--fs-micro);
+  letter-spacing: var(--track-label);
+  text-transform: lowercase;
 }
 
-/* Inputs/textarea scoped to the form — paper sheet, ink border, mono font. */
 .comment-form input[type='text'],
 .comment-form textarea {
   font-family: var(--font-body);
@@ -460,7 +647,7 @@ img {
   line-height: var(--lh-body);
   color: var(--ink);
   background: var(--paper);
-  border: var(--stroke) solid var(--ink);
+  border: var(--rule) solid var(--ink);
   border-radius: var(--radius);
   padding: var(--space-2) var(--space-3);
   width: 100%;
@@ -471,22 +658,23 @@ img {
 }
 .comment-form input[type='text']:focus-visible,
 .comment-form textarea:focus-visible {
-  outline: var(--stroke) solid var(--ink);
+  outline: var(--rule) solid var(--ink);
   outline-offset: 2px;
-  background: var(--paper-bright);
+  background: var(--ink-wash);
+}
+.comment-form input[type='text']::placeholder,
+.comment-form textarea::placeholder {
+  color: var(--ink-faint);
 }
 
 .comment-form__error {
   margin: 0;
-  color: var(--accent-red);
-  font-weight: bold;
+  font-weight: 700;
 }
 .comment-form__notice {
   margin: 0;
-  /* yellow as a highlighter swipe behind black text — sanctioned use */
   display: inline-block;
-  color: var(--ink);
-  background: var(--highlighter);
+  border: var(--rule) solid var(--ink);
   padding: var(--space-1) var(--space-2);
 }
 
@@ -496,9 +684,10 @@ img {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: 0;
 }
-.comment-list__empty {
+.comment-list__empty,
+.comment-list__error {
   margin: 0;
   color: var(--ink-soft);
 }
@@ -507,8 +696,11 @@ img {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  padding: var(--space-4);
-  background: var(--paper-bright);
+  padding: var(--space-4) 0;
+  border-top: var(--rule) solid var(--hairline);
+}
+.comment:last-child {
+  border-bottom: var(--rule) solid var(--hairline);
 }
 
 .comment__meta {
@@ -518,80 +710,36 @@ img {
   gap: var(--space-2) var(--space-3);
 }
 .comment__nickname {
-  font-weight: bold;
-  text-transform: uppercase;
+  font-weight: 700;
 }
 .comment__date {
-  font-size: var(--fs-small);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.1em;
   color: var(--ink-soft);
 }
 
 .comment__body {
   margin: 0;
-  /* preserve user line breaks from raw text */
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+  max-width: var(--measure);
 }
 
-/* Like = inline pill button; count stays visible. */
 .comment__like {
   align-self: flex-start;
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
-  font-size: var(--fs-small);
+  font-size: var(--fs-micro);
+  padding: var(--space-1) var(--space-3);
 }
-/* Pressed (liked) state: invert to black sheet + yellow heart (yellow-on-black ok). */
 .comment__like[aria-pressed='true'] {
   background: var(--ink);
-  color: var(--highlighter);
+  color: var(--paper);
 }
 
 /* ==========================================================================
-   BTN-ZINE — the punk/photocopied button
-   Highlighter-yellow fill behind BLACK text (never yellow text on white),
-   hard offset shadow, stamp font, hand-made press feel.
-   ========================================================================== */
-.btn-zine {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-1);
-  padding: var(--space-2) var(--space-5);
-  font-family: var(--font-stamp);
-  font-size: var(--fs-body);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--ink);
-  background: var(--highlighter);
-  border: var(--stroke-bold) solid var(--ink);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-hard-sm);
-  cursor: pointer;
-  text-decoration: none;
-  transition: transform 90ms ease, box-shadow 90ms ease, background-color 90ms ease;
-}
-.btn-zine:hover:not([disabled]) {
-  background: var(--highlighter-deep);
-}
-.btn-zine:focus-visible {
-  outline: var(--stroke) solid var(--ink);
-  outline-offset: 2px;
-}
-/* Press effect — button "stamps" down into its shadow. */
-.btn-zine:active:not([disabled]) {
-  transform: translate(2px, 2px);
-  box-shadow: none;
-}
-.btn-zine[disabled] {
-  cursor: not-allowed;
-  opacity: 0.55;
-  background: var(--paper-dim);
-  box-shadow: none;
-}
-
-/* ==========================================================================
-   404 / NOT FOUND  (.not-found is also .zine-paper, so it's positioned)
+   404 / NOT FOUND
    ========================================================================== */
 .not-found {
   display: flex;
@@ -603,18 +751,31 @@ img {
   min-height: 100dvh;
   padding: var(--space-8) var(--space-5);
   text-align: center;
+  background: var(--paper);
+  color: var(--ink);
 }
 .not-found__code {
   margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(4rem, 18vw, 9rem);
+  line-height: 1;
 }
 .not-found__art {
   display: block;
   width: 100%;
-  max-width: 320px;
+  max-width: 280px;
   height: auto;
+  mix-blend-mode: multiply;
+  filter: grayscale(1) contrast(1.2);
+  opacity: 0.85;
 }
 .not-found__title {
   margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
   font-size: var(--fs-h2);
 }
 .not-found__message {
@@ -626,30 +787,25 @@ img {
 }
 .not-found__links a {
   color: var(--ink);
+  font-weight: 700;
   text-decoration: underline;
-  text-decoration-thickness: var(--stroke);
-  text-underline-offset: 0.15em;
+  text-decoration-thickness: var(--rule);
+  text-underline-offset: 0.18em;
 }
 .not-found__links a:hover {
-  background: var(--highlighter);
+  background: var(--ink);
+  color: var(--paper);
 }
 .not-found__links a:focus-visible {
-  outline: var(--stroke) solid var(--ink);
+  outline: var(--rule) solid var(--ink);
   outline-offset: 2px;
 }
 
 /* ==========================================================================
-   REDUCED MOTION — keep hover/press transitions subtle (none).
+   REDUCED MOTION
    ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
-  .post-card,
-  .btn-zine {
+  .btn-press {
     transition: none;
-  }
-  .post-card:hover {
-    transform: none;
-  }
-  .btn-zine:active:not([disabled]) {
-    transform: none;
   }
 }

@@ -1,54 +1,41 @@
 /* ==========================================================================
-   tokens.css — SINGLE SOURCE OF TRUTH for the zine visual layer.
-   Palette, type scale, spacing, and "imperfection" vars (rotation/offset).
-   zine.css and all components consume these. Import this first.
+   tokens.css — SINGLE SOURCE OF TRUTH for Direction A: "One pass".
+   One white sheet, one cobalt ink, nothing else. No texture, no tilts,
+   no spot accents. layout.css consumes these. Import this first.
    ========================================================================== */
 
 :root {
-  /* --- INK & PAPER -------------------------------------------------------- */
-  --ink: #14110f;            /* primary ink — near-black, slightly warm (toner) */
-  --ink-soft: #2b2723;       /* secondary ink for less-critical strokes */
-  --paper: #f4efe3;          /* off-white newsprint base */
-  --paper-bright: #fbf8ef;   /* lighter sheet (cards / cut-outs) */
-  --paper-dim: #e7e0cf;      /* shadowed / aged paper */
-
-  /* --- SPOT COLOR: highlighter yellow ------------------------------------ */
-  /* CONTRAST RULE: NEVER yellow text on white. Yellow = (a) marker fill BEHIND
-     black text, (b) sticker/tape/stamp accent, (c) accent on BLACK bg. */
-  --highlighter: #ffe800;        /* the spot color */
-  --highlighter-deep: #f2cf00;   /* edge/shadow of the marker swipe */
-
-  /* --- RARE ACCENTS (use sparingly; never as equal stripes / flag) -------- */
-  --accent-red: #e0301e;
-  --accent-green: #1f8a3b;
+  /* --- ONE INK, ONE SHEET ------------------------------------------------- */
+  --ink: #2340c9;                       /* cobalt — the single press color */
+  --ink-soft: rgba(35, 64, 201, 0.72);  /* secondary strokes / muted meta */
+  --ink-faint: rgba(35, 64, 201, 0.45); /* echo lines, decorative repeats */
+  --ink-wash: rgba(35, 64, 201, 0.07);  /* barely-there fills (code bg, inputs) */
+  --paper: #ffffff;                     /* the white sheet */
 
   /* --- SEMANTIC ----------------------------------------------------------- */
   --bg: var(--paper);
   --fg: var(--ink);
-  --bg-invert: var(--ink);   /* black panels — yellow-on-black lives here */
-  --fg-invert: var(--paper-bright);
   --link: var(--ink);
   --hairline: var(--ink);
 
   /* --- TYPE (families come from src/app/(frontend)/fonts.ts) -------------- */
-  --font-display: 'Anton', 'Arial Narrow', system-ui, sans-serif;
-  --font-ransom: 'Archivo Black', system-ui, sans-serif;
-  --font-stamp: 'Special Elite', 'Courier New', monospace;
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
   --font-body: 'Spline Sans Mono', ui-monospace, 'SFMono-Regular', monospace;
 
-  /* fluid type scale (mobile-first; clamps grow with viewport) */
-  --fs-display: clamp(2.5rem, 11vw, 6rem);
-  --fs-h1: clamp(2rem, 8vw, 4rem);
-  --fs-h2: clamp(1.5rem, 5vw, 2.5rem);
-  --fs-h3: clamp(1.25rem, 3.5vw, 1.75rem);
-  --fs-body: clamp(1rem, 0.95rem + 0.3vw, 1.0625rem);
-  --fs-small: 0.8125rem;
+  /* fluid type scale (mobile-first) */
+  --fs-display: clamp(2.25rem, 7vw, 3.875rem); /* stacked hero lines */
+  --fs-h1: clamp(1.875rem, 5.5vw, 2.875rem);
+  --fs-h2: clamp(1.375rem, 3.5vw, 1.75rem);
+  --fs-h3: clamp(1.2rem, 2.6vw, 1.45rem);
+  --fs-body: 0.875rem;       /* mono reads big; 14px holds the flyer scale */
+  --fs-small: 0.75rem;
+  --fs-micro: 0.6875rem;     /* vertical margin text, catalog numbers */
 
-  --lh-tight: 0.95;
-  --lh-body: 1.6;   /* generous for mono readability / WCAG */
-  --measure: 68ch;  /* max line length for body copy */
+  --lh-tight: 1.06;
+  --lh-body: 1.7;
+  --measure: 66ch;
 
-  /* --- SPACING (8pt-ish, slightly off for zine looseness) ----------------- */
+  /* --- SPACING ------------------------------------------------------------ */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -58,30 +45,11 @@
   --space-8: 3rem;
   --space-12: 5rem;
 
-  /* --- IMPERFECTION: rotation / offset jitter ----------------------------- */
-  /* Components read these so the whole site shares one "wobble" budget. */
-  --tilt-xs: 0.6deg;
-  --tilt-sm: 1.5deg;
-  --tilt-md: 3deg;
-  --tilt-lg: 5deg;
-  --jitter: 2px;            /* small positional nudge */
+  /* --- RULES / EDGES -------------------------------------------------------*/
+  --rule: 1.5px;             /* the hairline — every border on the site */
+  --radius: 0;               /* one pass prints square */
 
-  /* --- BORDERS / EDGES ---------------------------------------------------- */
-  --stroke: 2px;           /* default hand-inked stroke weight */
-  --stroke-bold: 4px;
-  --radius: 2px;           /* photocopies are square; keep it tight */
-
-  /* --- TEXTURE INTENSITY (consumed by zine.css; tune globally here) ------- */
-  --grain-opacity: 0.10;
-  --halftone-opacity: 0.14;
-  --paper-tex-opacity: 0.7;
-
-  /* --- ELEVATION (hard xerox drop, no blur) ------------------------------- */
-  --shadow-hard: 4px 4px 0 var(--ink);
-  --shadow-hard-sm: 2px 2px 0 var(--ink);
-
-  /* --- Z-LAYERS ----------------------------------------------------------- */
-  --z-grain: 9999;   /* site-wide grain overlay sits on top, pointer-events:none */
-  --z-tape: 50;
-  --z-sticker: 40;
+  /* --- LETTERSPACING VOICES ------------------------------------------------*/
+  --track-label: 0.14em;     /* vertical side text, stamps */
+  --track-nav: 0.04em;
 }
